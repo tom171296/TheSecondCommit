@@ -4,9 +4,9 @@
     <nav aria-label="Main Navigation" class="main-nav">
       <ul>
         <li><a href="/blog/" {{ if eq .Section "blog" }}aria-current="page"{{ end }}>Blog</a></li>
-        <li><a href="/projects/">Projects</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/newsletter/">Newsletter</a></li>
+        <li><a href="/podcast/"{{ if eq .Section "podcast" }}aria-current="page"{{ end }}>Podcast</a></li>
+        <li><a href="/about/" {{ if eq .Section "about" }}aria-current="page"{{ end }}>About</a></li>
+        <li><a href="/blog/index.xml" rel="alternate" type="application/rss+xml">RSS</a></li>
       </ul>
     </nav>
     <button class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">⚙️</button>

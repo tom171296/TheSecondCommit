@@ -1,4 +1,5 @@
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55;margin:0;padding:0;color:#222;background:#fff;-webkit-font-smoothing:antialiased}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55;margin:0;padding:0;color:#222;background:#fff;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1 0 auto}
 .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
 .skip-link:focus{left:8px;top:8px;width:auto;height:auto;padding:8px;background:#000;color:#fff;z-index:1000}
 .site-header,.site-footer{padding:1rem;background:#111;color:#eee}
@@ -44,6 +45,13 @@ section.recent-posts h2,section.all-posts h2{font-size:1rem;font-weight:600;text
 .post-card.recent{min-height:200px}
 .cover-link{position:absolute;inset:0;z-index:0}
 .post-card *{position:relative;z-index:1}
+.card-tags{list-style:none;display:flex;flex-wrap:wrap;gap:.4rem;margin:.75rem 0 0;padding:0}
+.card-tags li{background:#eef2f6;color:#384450;font-size:.6rem;font-weight:600;letter-spacing:.06em;padding:.35rem .55rem;border-radius:14px;line-height:1;text-transform:uppercase}
+body.dark .card-tags li{background:#252a31;color:#d5d7da}
+.post-media{margin:0 0 .75rem;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#f2f4f7;position:relative}
+.post-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.post-card:hover .post-media img{transform:scale(1.05)}
+body.dark .post-media{background:#1d2126}
 
 /* Single post enhancements */
 .post .meta{margin:0 0 .75rem;font-size:.8rem;letter-spacing:.03em;text-transform:uppercase;color:#666}
@@ -59,7 +67,7 @@ body.dark .tag-list li{background:#252a31;color:#d5d7da}
 .pagination .active a{background:#111;color:#fff;border-color:#111}
 
 /* Footer */
-.site-footer{margin-top:4rem;text-align:center;font-size:.75rem;letter-spacing:.03em}
+.site-footer{margin-top:4rem;text-align:center;font-size:.75rem;letter-spacing:.03em;margin-top:auto;padding:2rem 1rem 3rem}
 
 /* Dark mode */
 @media (prefers-color-scheme: dark){
@@ -70,8 +78,14 @@ body.dark .tag-list li{background:#252a31;color:#d5d7da}
 	body.dark .site-header nav a[aria-current="page"],body.dark .site-header nav a:hover{background:#1b1d21;color:#fff}
 	body.dark .theme-toggle{background:#1b1d21;border-color:#2a2d31;color:#eee}
 	body.dark .post-card{background:#16181c;border-color:#262a31;box-shadow:0 1px 2px rgba(0,0,0,.6)}
-	body.dark .post-card:hover{box-shadow:0 4px 18px -4px rgba(0,0,0,.7)}
-	body.dark .post-card .excerpt{color:#b5b7bb}
+		/* Improved contrast for card content in dark mode */
+		body.dark .post-card{background:#1d2329;border-color:#31373e}
+		body.dark .post-card:hover{box-shadow:0 4px 18px -4px rgba(0,0,0,.7)}
+		body.dark .post-card .post-title a{color:#f5f7fa}
+		body.dark .post-card .post-title a:hover,body.dark .post-card .post-title a:focus{color:#fff}
+		body.dark .post-card .meta{color:#9aa2ab}
+		body.dark .post-card .excerpt{color:#c2c7cc}
+		body.dark .card-tags li{background:#2d3339;color:#d8dadd}
 	body.dark .pagination a{background:#181a1e;border-color:#2a2d31;color:#d1d3d6}
 	body.dark .pagination a:hover{background:#1f2328}
 	body.dark .pagination .active a{background:#fff;color:#000}

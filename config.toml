@@ -9,6 +9,7 @@ theme = "secondcommit"
 
 [outputs]
   home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
 
 [pagination]
   pagersize = 10

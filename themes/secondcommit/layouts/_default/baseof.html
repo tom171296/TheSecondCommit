@@ -7,7 +7,17 @@
   {{ with .Params.description }}<meta name="description" content="{{ . }}" />{{ end }}
   {{ if .Params.scheduled }}<meta name="robots" content="noindex" />{{ end }}
   <link rel="canonical" href="{{ .Permalink }}" />
-  <link rel="stylesheet" href="/css/critical.css" />
+  {{/* RSS autodiscovery: site-wide and blog section (if section exists) */}}
+  {{ with .Site.Home.OutputFormats.Get "RSS" }}
+  <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }} RSS" href="{{ .RelPermalink }}" />
+  {{ end }}
+  {{ $blog := .Site.GetPage "section" "blog" }}
+  {{ with $blog.OutputFormats.Get "RSS" }}
+  <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }} Blog RSS" href="{{ .RelPermalink }}" />
+  {{ end }}
+  {{/* Load critical.css via Hugo Pipes so it is emitted to /public with a cache-busting fingerprint */}}
+  {{ $critical := resources.Get "css/critical.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $critical.RelPermalink }}" integrity="{{ $critical.Data.Integrity }}" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>

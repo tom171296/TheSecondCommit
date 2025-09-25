@@ -14,11 +14,19 @@
     {{ range $recent }}
     <article class="post-card recent">
       <a class="cover-link" href="{{ .RelPermalink }}" aria-label="Read: {{ .Title }}"></a>
+      {{ with .Params.cover }}
+      <figure class="post-media">
+        <img src="{{ . }}" alt="{{ $.Params.coverAlt | default $.Params.description | default $.Title }}" loading="lazy" decoding="async"/>
+      </figure>
+      {{ end }}
       <header>
         <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></p>
         <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       </header>
       {{ with .Params.description }}<p class="excerpt">{{ . }}</p>{{ end }}
+  {{ with .Params.tags }}
+  <ul class="card-tags">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+  {{ end }}
     </article>
     {{ end }}
   </div>
@@ -31,11 +39,19 @@
     {{ range $paginator.Pages }}
     <article class="post-card">
       <a class="cover-link" href="{{ .RelPermalink }}" aria-label="Read: {{ .Title }}"></a>
+      {{ with .Params.cover }}
+      <figure class="post-media">
+        <img src="{{ . }}" alt="{{ $.Params.coverAlt | default $.Params.description | default $.Title }}" loading="lazy" decoding="async"/>
+      </figure>
+      {{ end }}
       <header>
         <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></p>
         <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       </header>
       {{ with .Params.description }}<p class="excerpt">{{ . }}</p>{{ end }}
+  {{ with .Params.tags }}
+  <ul class="card-tags">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+  {{ end }}
     </article>
     {{ end }}
   </div>
