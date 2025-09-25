@@ -1,0 +1,14 @@
+{{ define "main" }}
+<h1>Blog</h1>
+<ul class="post-list">
+{{ $pages := where .Paginator.Pages "Params.scheduled" "ne" true }}
+{{ range $pages }}
+  <li>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+    <p>{{ .Params.description }}</p>
+  </li>
+{{ end }}
+</ul>
+{{ template "_internal/pagination.html" . }}
+{{ end }}

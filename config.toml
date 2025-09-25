@@ -1,0 +1,19 @@
+baseURL = "https://example.com/"
+languageCode = "en-us"
+title = "TheSecondCommit"
+theme = "secondcommit"
+
+[params]
+  description = "TheSecondCommit Blog: Thoughts, updates, and deep dives."
+  showScheduled = true
+
+[outputs]
+  home = ["HTML", "RSS"]
+
+[pagination]
+  pagersize = 10
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false
