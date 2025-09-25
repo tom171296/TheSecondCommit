@@ -1,0 +1,80 @@
+name: Deploy Static Site
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  HUGO_VERSION_FILE: HUGO_VERSION
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read pinned Hugo version
+        id: hugoversion
+        shell: bash
+        run: |
+          if [ -f "${HUGO_VERSION_FILE}" ]; then
+            ver=$(cat ${HUGO_VERSION_FILE} | tr -d '\r' | tr -d ' ')
+          else
+            echo "HUGO_VERSION file missing" >&2
+            exit 1
+          fi
+          if [ -z "$ver" ]; then
+            echo "Pinned Hugo version empty" >&2
+            exit 1
+          fi
+          echo "Pinned Hugo version: $ver"
+          echo "version=$ver" >> $GITHUB_OUTPUT
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ steps.hugoversion.outputs.version }}
+          extended: true
+
+      - name: Build site
+        id: build
+        shell: bash
+        run: |
+          start=$(date +%s)
+          hugo --cleanDestinationDir
+          end=$(date +%s)
+          echo "duration=$((end-start))" >> $GITHUB_OUTPUT
+          if [ ! -f CNAME ]; then
+            echo "CNAME file missing at repo root before packaging" >&2
+            exit 1
+          fi
+          cp CNAME public/CNAME
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Summary
+        if: success()
+        shell: bash
+        run: |
+          sha_short=${GITHUB_SHA:0:7}
+          echo "Deployed commit: $sha_short" >> $GITHUB_STEP_SUMMARY
+          echo "Build duration (s): ${{ steps.build.outputs.duration }}" >> $GITHUB_STEP_SUMMARY
+          echo "Page URL: ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
