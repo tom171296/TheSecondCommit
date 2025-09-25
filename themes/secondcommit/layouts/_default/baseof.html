@@ -16,5 +16,19 @@
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "footer.html" . }}
+  <script>
+  (function(){
+    const key='pref-theme';
+    const stored=localStorage.getItem(key);
+    const prefers=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if(stored==='dark'||(!stored&&prefers)) document.body.classList.add('dark');
+    document.addEventListener('click',function(e){
+      const btn=e.target.closest('.theme-toggle');
+      if(!btn) return;
+      document.body.classList.toggle('dark');
+      localStorage.setItem(key,document.body.classList.contains('dark')?'dark':'light');
+    });
+  })();
+  </script>
 </body>
 </html>

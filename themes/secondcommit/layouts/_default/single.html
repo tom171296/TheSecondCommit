@@ -2,8 +2,10 @@
 <article class="post">
   {{ if .Params.scheduled }}<div class="badge badge-scheduled">Scheduled</div>{{ end }}
   <h1>{{ .Title }}</h1>
-  <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-  {{ with .Lastmod }} • Updated <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "Jan 2, 2006" }}</time>{{ end }}</p>
+  <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>{{ with .Lastmod }} • Updated <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "Jan 2, 2006" }}</time>{{ end }}</p>
+  {{ with .Params.tags }}
+  <ul class="tag-list">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+  {{ end }}
   {{ if not .Params.description }}{{ errorf "Missing required description for %s" .File.Path }}{{ end }}
   {{ .Content }}
   <nav class="post-nav">

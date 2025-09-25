@@ -1,14 +1,44 @@
 {{ define "main" }}
-<h1>Blog</h1>
-<ul class="post-list">
-{{ $pages := where .Paginator.Pages "Params.scheduled" "ne" true }}
-{{ range $pages }}
-  <li>
-    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-    <p>{{ .Params.description }}</p>
-  </li>
-{{ end }}
-</ul>
-{{ template "_internal/pagination.html" . }}
+<section class="blog-hero">
+  <h1 class="blog-title">THE BLOG</h1>
+</section>
+
+{{ $all := where .Pages "Type" "blog" }}
+{{ $published := where $all "Draft" "ne" true }}
+{{ $sorted := sort $published "Date" "desc" }}
+{{ $recent := first 4 $sorted }}
+
+<section class="recent-posts" aria-labelledby="recent-heading">
+  <h2 id="recent-heading">Recent blog posts</h2>
+  <div class="post-grid recent">
+    {{ range $recent }}
+    <article class="post-card recent">
+      <a class="cover-link" href="{{ .RelPermalink }}" aria-label="Read: {{ .Title }}"></a>
+      <header>
+        <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></p>
+        <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      </header>
+      {{ with .Params.description }}<p class="excerpt">{{ . }}</p>{{ end }}
+    </article>
+    {{ end }}
+  </div>
+</section>
+
+<section class="all-posts" aria-labelledby="all-heading">
+  <h2 id="all-heading">All blog posts</h2>
+  {{ $paginator := .Paginate $sorted }}
+  <div class="post-grid all">
+    {{ range $paginator.Pages }}
+    <article class="post-card">
+      <a class="cover-link" href="{{ .RelPermalink }}" aria-label="Read: {{ .Title }}"></a>
+      <header>
+        <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></p>
+        <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      </header>
+      {{ with .Params.description }}<p class="excerpt">{{ . }}</p>{{ end }}
+    </article>
+    {{ end }}
+  </div>
+  <nav class="pagination" aria-label="Pagination">{{ template "_internal/pagination.html" . }}</nav>
+</section>
 {{ end }}
